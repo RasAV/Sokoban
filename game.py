@@ -3,8 +3,6 @@ from cocos.director import director
 from cocos.layer import *
 import pyglet
 from pyglet.window import key
-import cocos.collision_model as cm
-import cocos.euclid as eu
 
 
 class Player(cocos.sprite.Sprite):
@@ -44,8 +42,8 @@ class Box(cocos.sprite.Sprite):
     def __init__(self):
         img = pyglet.image.load("res/CrateDark_Red.png")
         super().__init__(img)
-        x0 = -64 + self.width/2
-        y0 = 64
+        x0 = 0
+        y0 = 0
         self.box_x = 2
         self.box_y = 4
         self.position = [x0, y0]
@@ -151,6 +149,11 @@ class MainLayer(cocos.layer.Layer):
         self.add(self.box5_layer, 2)
 
     def update(self, dt):
+        #win case
+        if (map_arr[1][6] in [2, 3, 4, 5]) and (map_arr[1][7] in [2, 3, 4, 5]) \
+                and (map_arr[2][6] in [2, 3, 4, 5]) and (map_arr[2][7] in [2, 3, 4, 5]):
+            self.add(cocos.text.Label("You win", position = (-64, 0), font_size=32, color=(255, 0, 0, 225)))
+
         px = self.player_layer.player_x
         py = self.player_layer.player_y
 
@@ -241,7 +244,7 @@ if __name__ == "__main__":
     canvas = cocos.scene.Scene()
 
     map_layer = MainLayer()
-    map_layer.schedule_interval(map_layer.update, 1 / 12)
+    map_layer.schedule_interval(map_layer.update, 1 / 10)
 
     canvas.add(map_layer, 0, "background map")
 
